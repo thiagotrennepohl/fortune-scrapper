@@ -3,7 +3,7 @@ package scrapper
 import "github.com/thiagotrennepohl/fortune-scrapper/models"
 
 type ScrapperRepository interface {
-	GetData() (models.FortuneMessage, error)
+	GetData() ([]models.FortuneMessage, error)
 }
 
 type FortuneAppRepository interface {

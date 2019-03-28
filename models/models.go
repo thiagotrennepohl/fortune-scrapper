@@ -5,3 +5,7 @@ import (
 )
 
 type FortuneMessage fortuneBackEnd.FortuneMessage
+
+type FortuneAppEndpointConfig struct {
+	SaveEndpoint string
+}
