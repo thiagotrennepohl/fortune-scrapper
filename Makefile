@@ -27,7 +27,7 @@ do-cover: ## Test report
 
 cover: env do-cover env-stop ## [env do-cover env-stop]
 
-build: clean test ## [clean test] Build binary file
+build: clean  ## [clean test] Build binary file
 	docker build -t thiagotr/fortune-scrapper .
 
 docker: ## Build Docker image
