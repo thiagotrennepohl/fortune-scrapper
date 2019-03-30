@@ -32,7 +32,7 @@ build: clean  ## [clean test] Build binary file
 
 docker: ## Build Docker image
 	docker login -u ${DOCKER_LOGIN} -p ${DOCKER_PASSWORD}
-	docker push thiagotr/fortune-backend
+	docker push thiagotr/fortune-scrapper
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
