@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: ci tools clean test do-cover cover build image help
+.PHONY: ci tools clean unit-test do-cover cover build image help
 
 NAME    = main
 VERSION = 1.0.0
@@ -10,14 +10,17 @@ GOTOOLS = \
 
 
 
-ci: clean test build docker ## Continous Integration Steps
+ci: clean unit-test build docker ## Continous Integration Steps
 
 clean: ## Remove old binary
 	-@rm -f $(NAME); \
 	find vendor/* -maxdepth 0 -type d -exec rm -rf '{}' \;
 
-test:  ## Execute tests
-	go test $$(go list ./... | grep -v vendor)
+unit-test:  ## Execute tests
+	go test -cover ./scrapper
+
+# ci-integration-tests:
+  
 
 do-cover: ## Test report
 	./scripts/cover.sh
