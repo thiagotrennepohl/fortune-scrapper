@@ -8,6 +8,8 @@ metadata:
     environment: ${ENVIRONMENT}
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       application: ${ENVIRONMENT}-fortune-scrapper
