@@ -8,5 +8,6 @@ RUN apk add --update git ca-certificates && go mod download && CGO_ENABLED=0 go 
 # final stage
 FROM alpine
 WORKDIR /app
+RUN apk add --update ca-certificates
 COPY --from=builder /go/src/github.com/thiagotrennepohl/fortune-scrapper/main /app/main
 ENTRYPOINT ./main
