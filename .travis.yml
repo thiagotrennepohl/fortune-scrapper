@@ -11,4 +11,20 @@ services:
 go:
   - "1.12.x"
 
-script: make ci
+
+stages:
+  - test
+  - build
+  - deploy
+
+jobs:
+  include:
+    - stage: test
+      script: make test
+    - stage: build
+      script: docker
+    - stage: deploy
+      script:
+        - make create-kube-config
+        - make install-kubectl
+        - ENVIRONMENT=production NAMESPACE=default envsubst <  k8s_scrapper.yml | kubectl apply -f -
