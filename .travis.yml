@@ -20,7 +20,7 @@ stages:
 jobs:
   include:
     - stage: test
-      script: make test
+      script: make unit-test
     - stage: build
       script: docker
     - stage: deploy
