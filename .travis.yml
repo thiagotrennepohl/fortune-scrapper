@@ -24,6 +24,7 @@ jobs:
     - stage: build
       script: docker
     - stage: deploy
+      if: branch = master
       script:
         - make create-kube-config
         - make install-kubectl

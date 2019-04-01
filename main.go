@@ -20,6 +20,39 @@ var (
 )
 
 func init() {
+	envCheck()
+}
+
+func main() {
+
+	fortuneAppRepository := fortuneAppRepo.NewFortuneAppRepository(fortuneAppConfig)
+	scrapperRepository := scrapperRepo.NewScrapperRepository(fortuneMessageSourceEndpoint)
+	fortuneScrapperService := scrapper.NewScrapperService(fortuneAppRepository, scrapperRepository)
+
+	//At startup perform a full sync
+	err := fortuneScrapperService.FullSync()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	if crontEnabled && cronInterval != 0*time.Second {
+		for {
+			err := fortuneScrapperService.SaveMessage()
+			if err != nil && err.Error() != scrapper.AlreadyExistsMsg {
+				log.Fatal(err.Error())
+			}
+			time.Sleep(cronInterval)
+		}
+	}
+
+	err = fortuneScrapperService.SaveMessage()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+}
+
+func envCheck() {
 	if isCronEnabled, ok := os.LookupEnv("ENABLE_CRON"); ok {
 		envValue, err := strconv.ParseBool(isCronEnabled)
 		if err != nil {
@@ -47,28 +80,4 @@ func init() {
 	} else {
 		log.Fatal("Environment MESSAGE_SOURCE_ENDPOINT not set ")
 	}
-
-}
-
-func main() {
-
-	fortuneAppRepository := fortuneAppRepo.NewFortuneAppRepository(fortuneAppConfig)
-	scrapperRepository := scrapperRepo.NewScrapperRepository(fortuneMessageSourceEndpoint)
-	fortuneScrapperService := scrapper.NewScrapperService(fortuneAppRepository, scrapperRepository)
-
-	if crontEnabled && cronInterval != 0*time.Second {
-		for {
-			err := fortuneScrapperService.FullSync()
-			if err != nil {
-				log.Fatal(err.Error())
-			}
-			time.Sleep(cronInterval)
-		}
-	}
-
-	err := fortuneScrapperService.FullSync()
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
 }
