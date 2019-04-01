@@ -1,4 +1,4 @@
-# Fortune Scrapper
+# Fortune Scrapper ![alt](https://travis-ci.org/thiagotrennepohl/fortune-scrapper.svg?branch=master)
 
 ### Running locally
 
