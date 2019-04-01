@@ -1,0 +1,19 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: fortune-scrapper
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: forutne-scrapper
+            image: thiagotr/fortune-scrapper
+            env:
+              - name: FORTUNE_APP_SAVE_ENDPOINT
+                value: https://app.fortune.opsadventures.com/v1/fortune
+              - name: MESSAGE_SOURCE_ENDPOINT
+                value: http://dojodevopschallenge.s3-website-eu-west-1.amazonaws.com/fortune_of_the_day.json
+          restartPolicy: OnFailure

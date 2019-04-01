@@ -1,0 +1,21 @@
+dversion: '3'
+services:
+  fortune-app-backend:
+    image: thiagotr/fortune-backend
+    environment:
+      MONGO_ADDR: "mongodb://fortune_backend_mongo:27017/fortune-messages"
+    ports:
+      - 4001:4000
+
+  fortune-scrapper:
+    build: .
+    restart_policy: always
+    environment:
+      ENABLE_CRON: 'true'
+      CRON_INTERVAL: 10s
+      FORTUNE_APP_SAVE_ENDPOINT: "http://fortune-app-backend:4000/v1/fortune"
+      MESSAGE_SOURCE_ENDPOINT: "http://dojodevopschallenge.s3-website-eu-west-1.amazonaws.com/fortune_of_the_day.json"
+
+
+  fortune_backend_mongo:
+    image: mongo
