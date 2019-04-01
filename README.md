@@ -34,3 +34,7 @@ For running on travis the following environments are required
 ### Building docker image
 
 `make build`
+
+### Deploying as a cron job
+
+`kubectl -f k8s-cronjob.yml apply`
